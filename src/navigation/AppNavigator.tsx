@@ -24,6 +24,10 @@ import CalendarScreen from '../screens/CalendarScreen';
 import TulipGardenScreen from '../screens/TulipGardenScreen';
 import PinterestBoardsScreen from '../screens/PinterestBoardsScreen';
 import CouplePairingScreen from '../screens/CouplePairingScreen';
+import AnalyticsScreen from '../screens/AnalyticsScreen';
+import AnniversaryScreen from '../screens/AnniversaryScreen';
+import DateSuggestionsScreen from '../screens/DateSuggestionsScreen';
+import SurpriseGeneratorScreen from '../screens/SurpriseGeneratorScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -157,6 +161,46 @@ const AppNavigator = () => {
               options={{
                 headerShown: true,
                 title: 'Pinterest',
+                headerStyle: { backgroundColor: colors.background.light },
+                headerTintColor: colors.text.light.primary,
+              }}
+            />
+            <Stack.Screen
+              name="Analytics"
+              component={AnalyticsScreen}
+              options={{
+                headerShown: true,
+                title: 'Analytics',
+                headerStyle: { backgroundColor: colors.background.light },
+                headerTintColor: colors.text.light.primary,
+              }}
+            />
+            <Stack.Screen
+              name="Anniversary"
+              component={AnniversaryScreen}
+              options={{
+                headerShown: true,
+                title: 'Anniversaries',
+                headerStyle: { backgroundColor: colors.background.light },
+                headerTintColor: colors.text.light.primary,
+              }}
+            />
+            <Stack.Screen
+              name="DateSuggestions"
+              component={DateSuggestionsScreen}
+              options={{
+                headerShown: true,
+                title: 'Date Ideas',
+                headerStyle: { backgroundColor: colors.background.light },
+                headerTintColor: colors.text.light.primary,
+              }}
+            />
+            <Stack.Screen
+              name="SurpriseGenerator"
+              component={SurpriseGeneratorScreen}
+              options={{
+                headerShown: true,
+                title: 'Surprise Generator',
                 headerStyle: { backgroundColor: colors.background.light },
                 headerTintColor: colors.text.light.primary,
               }}

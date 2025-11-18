@@ -212,6 +212,95 @@ const HomeScreen = ({ navigation }: any) => {
             </View>
           </View>
 
+          {/* Premium Features */}
+          <Text variant="h2" style={[styles.sectionHeader, { marginTop: spacing.lg }]}>
+            ✨ PREMIUM FEATURES ✨
+          </Text>
+
+          <View style={styles.cardGrid}>
+            <TouchableOpacity
+              style={styles.quickCard}
+              onPress={() => navigation.navigate('Analytics')}
+            >
+              <Card variant="light">
+                <Ionicons
+                  name="stats-chart"
+                  size={32}
+                  color={colors.primary.sharedPurple}
+                />
+                <Text variant="h3" style={styles.cardTitle}>
+                  Analytics
+                </Text>
+                <Text variant="bodySmall">
+                  Relationship insights
+                </Text>
+                <Text variant="caption">📊 Trends</Text>
+              </Card>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.quickCard}
+              onPress={() => navigation.navigate('Anniversary')}
+            >
+              <Card variant="light">
+                <Ionicons
+                  name="gift"
+                  size={32}
+                  color={colors.primary.tulipRed}
+                />
+                <Text variant="h3" style={styles.cardTitle}>
+                  Anniversary
+                </Text>
+                <Text variant="bodySmall">
+                  Celebrate milestones
+                </Text>
+                <Text variant="caption">🎉 Special dates</Text>
+              </Card>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.cardGrid}>
+            <TouchableOpacity
+              style={styles.quickCard}
+              onPress={() => navigation.navigate('DateSuggestions')}
+            >
+              <Card variant="light">
+                <Ionicons
+                  name="bulb"
+                  size={32}
+                  color={colors.primary.tulipYellow}
+                />
+                <Text variant="h3" style={styles.cardTitle}>
+                  Date Ideas
+                </Text>
+                <Text variant="bodySmall">
+                  AI suggestions
+                </Text>
+                <Text variant="caption">💡 Personalized</Text>
+              </Card>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.quickCard}
+              onPress={() => navigation.navigate('SurpriseGenerator')}
+            >
+              <Card variant="light">
+                <Ionicons
+                  name="sparkles"
+                  size={32}
+                  color={colors.primary.gayuPink}
+                />
+                <Text variant="h3" style={styles.cardTitle}>
+                  Surprises
+                </Text>
+                <Text variant="bodySmall">
+                  Random ideas
+                </Text>
+                <Text variant="caption">🎁 Delight</Text>
+              </Card>
+            </TouchableOpacity>
+          </View>
+
           {/* Calendar Preview */}
           <Card style={styles.calendarCard}>
             <Text variant="h3" style={styles.sectionTitle}>
