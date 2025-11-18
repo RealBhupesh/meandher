@@ -126,7 +126,10 @@ const HomeScreen = ({ navigation }: any) => {
             </View>
 
             <View style={styles.cardGrid}>
-              <TouchableOpacity style={styles.quickCard}>
+              <TouchableOpacity
+                style={styles.quickCard}
+                onPress={() => navigation.navigate('WatchList')}
+              >
                 <Card variant="light">
                   <Ionicons
                     name="film"
@@ -143,7 +146,10 @@ const HomeScreen = ({ navigation }: any) => {
                 </Card>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.quickCard}>
+              <TouchableOpacity
+                style={styles.quickCard}
+                onPress={() => navigation.navigate('Memories')}
+              >
                 <Card variant="light">
                   <Ionicons
                     name="heart"
@@ -157,6 +163,47 @@ const HomeScreen = ({ navigation }: any) => {
                     {memories.length} moments
                   </Text>
                   <Text variant="caption">📸 Latest: Today</Text>
+                </Card>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.cardGrid}>
+              <TouchableOpacity
+                style={styles.quickCard}
+                onPress={() => navigation.navigate('Calendar')}
+              >
+                <Card variant="light">
+                  <Ionicons
+                    name="calendar"
+                    size={32}
+                    color={colors.primary.sharedPurple}
+                  />
+                  <Text variant="h3" style={styles.cardTitle}>
+                    Calendar
+                  </Text>
+                  <Text variant="bodySmall">
+                    Our schedule
+                  </Text>
+                  <Text variant="caption">📅 Together</Text>
+                </Card>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.quickCard}
+                onPress={() => {
+                  // Batman surprise - could navigate to a special feature
+                  console.log('Batman easter egg!');
+                }}
+              >
+                <Card variant="light" style={{ backgroundColor: colors.accent.batmanDark + '10' }}>
+                  <Text variant="h2">🦇</Text>
+                  <Text variant="h3" style={styles.cardTitle}>
+                    Batcave
+                  </Text>
+                  <Text variant="bodySmall">
+                    Secret features
+                  </Text>
+                  <Text variant="caption">🦇 Explore</Text>
                 </Card>
               </TouchableOpacity>
             </View>
