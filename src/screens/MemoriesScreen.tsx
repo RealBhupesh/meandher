@@ -17,6 +17,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { Text, Card, Button, Input } from '../components';
+import { VideoPlayer } from '../components/VideoPlayer';
 import { colors, spacing } from '../theme';
 import { useStore } from '../store/useStore';
 import { Memory } from '../types';
@@ -30,40 +31,50 @@ const MemoriesScreen = () => {
   const [caption, setCaption] = useState('');
   const [mood, setMood] = useState<'loved-it' | 'happy' | 'emotional' | 'hilarious' | 'grateful'>('happy');
   const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
+  const [selectedVideos, setSelectedVideos] = useState<string[]>([]);
+  const [mediaType, setMediaType] = useState<'photo' | 'video'>('photo');
 
   const favoriteMemories = memories.filter((m) => m.favorite);
   const filteredMemories = filter === 'favorites' ? favoriteMemories : memories;
 
-  const pickImage = async () => {
+  const pickMedia = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert('Permission Required', 'Please allow access to your photos');
+      Alert.alert('Permission Required', 'Please allow access to your media library');
       return;
     }
 
     const result = await ImagePicker.launchImagePickerAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true,
+      mediaTypes: mediaType === 'photo'
+        ? ImagePicker.MediaTypeOptions.Images
+        : ImagePicker.MediaTypeOptions.Videos,
+      allowsMultipleSelection: mediaType === 'photo',
       quality: 0.8,
+      videoMaxDuration: 60, // 60 seconds max for videos
     });
 
     if (!result.canceled && result.assets) {
-      const newPhotos = result.assets.map((asset) => asset.uri);
-      setSelectedPhotos([...selectedPhotos, ...newPhotos]);
+      const newMedia = result.assets.map((asset) => asset.uri);
+      if (mediaType === 'photo') {
+        setSelectedPhotos([...selectedPhotos, ...newMedia]);
+      } else {
+        setSelectedVideos([...selectedVideos, ...newMedia]);
+      }
     }
   };
 
   const handleAddMemory = () => {
-    if (!caption && selectedPhotos.length === 0) {
-      Alert.alert('Error', 'Please add a caption or photos');
+    const hasMedia = selectedPhotos.length > 0 || selectedVideos.length > 0;
+    if (!caption && !hasMedia) {
+      Alert.alert('Error', 'Please add a caption or media');
       return;
     }
 
     const newMemory: Memory = {
       id: Date.now().toString(),
-      type: 'photo',
-      content: selectedPhotos,
+      type: selectedVideos.length > 0 ? 'video' : 'photo',
+      content: selectedVideos.length > 0 ? selectedVideos : selectedPhotos,
       caption,
       date: new Date(),
       mood,
@@ -78,6 +89,8 @@ const MemoriesScreen = () => {
     setIsAddModalVisible(false);
     setCaption('');
     setSelectedPhotos([]);
+    setSelectedVideos([]);
+    setMediaType('photo');
     Alert.alert('Success', 'Memory saved! 💝');
   };
 
@@ -106,6 +119,18 @@ const MemoriesScreen = () => {
             <View style={styles.morePhotos}>
               <Text variant="h3">+{memory.content.length - 3}</Text>
             </View>
+          )}
+        </View>
+      )}
+
+      {/* Videos */}
+      {memory.type === 'video' && Array.isArray(memory.content) && memory.content.length > 0 && (
+        <View style={styles.videoContainer}>
+          <VideoPlayer uri={memory.content[0]} style={styles.video} />
+          {memory.content.length > 1 && (
+            <Text variant="caption" style={styles.videoCount}>
+              +{memory.content.length - 1} more video{memory.content.length - 1 > 1 ? 's' : ''}
+            </Text>
           )}
         </View>
       )}
@@ -244,18 +269,66 @@ const MemoriesScreen = () => {
                 </TouchableOpacity>
               </View>
 
-              {/* Photo Picker */}
-              <TouchableOpacity style={styles.photoPicker} onPress={pickImage}>
-                {selectedPhotos.length > 0 ? (
+              {/* Media Type Selector */}
+              <View style={styles.mediaTypeSelector}>
+                <TouchableOpacity
+                  style={[
+                    styles.mediaTypeButton,
+                    mediaType === 'photo' && styles.mediaTypeButtonActive,
+                  ]}
+                  onPress={() => setMediaType('photo')}
+                >
+                  <Ionicons
+                    name="images"
+                    size={20}
+                    color={mediaType === 'photo' ? colors.primary.sharedPurple : colors.text.light.secondary}
+                  />
+                  <Text
+                    variant="bodySmall"
+                    color={mediaType === 'photo' ? colors.primary.sharedPurple : colors.text.light.secondary}
+                  >
+                    Photo
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.mediaTypeButton,
+                    mediaType === 'video' && styles.mediaTypeButtonActive,
+                  ]}
+                  onPress={() => setMediaType('video')}
+                >
+                  <Ionicons
+                    name="videocam"
+                    size={20}
+                    color={mediaType === 'video' ? colors.primary.sharedPurple : colors.text.light.secondary}
+                  />
+                  <Text
+                    variant="bodySmall"
+                    color={mediaType === 'video' ? colors.primary.sharedPurple : colors.text.light.secondary}
+                  >
+                    Video
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Media Picker */}
+              <TouchableOpacity style={styles.photoPicker} onPress={pickMedia}>
+                {(selectedPhotos.length > 0 || selectedVideos.length > 0) ? (
                   <View style={styles.selectedPhotos}>
-                    {selectedPhotos.slice(0, 3).map((photo, index) => (
+                    {mediaType === 'photo' && selectedPhotos.slice(0, 3).map((photo, index) => (
                       <Image
                         key={index}
                         source={{ uri: photo }}
                         style={styles.selectedPhoto}
                       />
                     ))}
-                    {selectedPhotos.length > 3 && (
+                    {mediaType === 'video' && selectedVideos.slice(0, 1).map((video, index) => (
+                      <View key={index} style={styles.selectedVideo}>
+                        <Ionicons name="videocam" size={32} color={colors.primary.sharedPurple} />
+                        <Text variant="caption">Video selected</Text>
+                      </View>
+                    ))}
+                    {selectedPhotos.length > 3 && mediaType === 'photo' && (
                       <View style={styles.moreSelected}>
                         <Text variant="body">+{selectedPhotos.length - 3}</Text>
                       </View>
@@ -263,9 +336,13 @@ const MemoriesScreen = () => {
                   </View>
                 ) : (
                   <View style={styles.photoPickerEmpty}>
-                    <Ionicons name="images-outline" size={48} color={colors.text.light.tertiary} />
+                    <Ionicons
+                      name={mediaType === 'photo' ? 'images-outline' : 'videocam-outline'}
+                      size={48}
+                      color={colors.text.light.tertiary}
+                    />
                     <Text variant="body" color={colors.text.light.secondary}>
-                      Add Photos
+                      Add {mediaType === 'photo' ? 'Photos' : 'Video'}
                     </Text>
                   </View>
                 )}
@@ -515,6 +592,51 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: spacing.md,
     marginTop: spacing.xl,
+  },
+  mediaTypeSelector: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  mediaTypeButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.sm,
+    borderRadius: 8,
+    backgroundColor: colors.background.light,
+    borderWidth: 1,
+    borderColor: colors.text.light.disabled,
+  },
+  mediaTypeButtonActive: {
+    backgroundColor: colors.primary.tulipWhite,
+    borderColor: colors.primary.sharedPurple,
+  },
+  videoContainer: {
+    marginBottom: spacing.md,
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  video: {
+    width: '100%',
+    height: 200,
+    borderRadius: 12,
+  },
+  videoCount: {
+    marginTop: spacing.xs,
+    color: colors.text.light.secondary,
+  },
+  selectedVideo: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    backgroundColor: colors.primary.tulipWhite,
+    borderWidth: 2,
+    borderColor: colors.primary.sharedPurple,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

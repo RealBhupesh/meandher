@@ -3,7 +3,7 @@
  * Main navigation structure for Gayu & B
  */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,7 +12,6 @@ import { colors } from '../theme';
 import { useStore } from '../store/useStore';
 
 // Import screens
-import SplashScreen from '../screens/SplashScreen';
 import AuthNavigator from './AuthNavigator';
 import HomeScreen from '../screens/HomeScreen';
 import TasksScreen from '../screens/TasksScreen';
@@ -22,6 +21,9 @@ import ProfileScreen from '../screens/ProfileScreen';
 import WatchListScreen from '../screens/WatchListScreen';
 import MemoriesScreen from '../screens/MemoriesScreen';
 import CalendarScreen from '../screens/CalendarScreen';
+import TulipGardenScreen from '../screens/TulipGardenScreen';
+import PinterestBoardsScreen from '../screens/PinterestBoardsScreen';
+import CouplePairingScreen from '../screens/CouplePairingScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -97,22 +99,15 @@ const MainTabs = () => {
 };
 
 const AppNavigator = () => {
-  const [showSplash, setShowSplash] = useState(true);
-  const { isAuthenticated } = useStore();
-
-  const handleSplashFinish = () => {
-    setShowSplash(false);
-  };
-
-  if (showSplash) {
-    return <SplashScreen onFinish={handleSplashFinish} />;
-  }
+  const { isAuthenticated, coupleId } = useStore();
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {!isAuthenticated ? (
           <Stack.Screen name="Auth" component={AuthNavigator} />
+        ) : !coupleId ? (
+          <Stack.Screen name="CouplePairing" component={CouplePairingScreen} />
         ) : (
           <>
             <Stack.Screen name="MainTabs" component={MainTabs} />
@@ -142,6 +137,26 @@ const AppNavigator = () => {
               options={{
                 headerShown: true,
                 title: 'Calendar',
+                headerStyle: { backgroundColor: colors.background.light },
+                headerTintColor: colors.text.light.primary,
+              }}
+            />
+            <Stack.Screen
+              name="TulipGarden"
+              component={TulipGardenScreen}
+              options={{
+                headerShown: true,
+                title: 'Tulip Garden',
+                headerStyle: { backgroundColor: colors.background.light },
+                headerTintColor: colors.text.light.primary,
+              }}
+            />
+            <Stack.Screen
+              name="PinterestBoards"
+              component={PinterestBoardsScreen}
+              options={{
+                headerShown: true,
+                title: 'Pinterest',
                 headerStyle: { backgroundColor: colors.background.light },
                 headerTintColor: colors.text.light.primary,
               }}

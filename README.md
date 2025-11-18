@@ -75,8 +75,11 @@ Gayu & B is a beautiful couples app that combines romance, productivity, and sha
 - Perfect match indicator
 
 #### 💝 **Memories** - Our Love Story Timeline
-- Create photo memories with multiple images (up to 10)
-- Photo picker with device gallery integration
+- Create photo and video memories with multiple media
+- Photo/Video picker with device gallery integration
+- Media type selector (Photo or Video mode)
+- Video playback with custom controls
+- Support for up to 10 photos or 1 minute videos
 - Captions and rich descriptions
 - Mood selector with emoji:
   - 😍 Loved it
@@ -87,6 +90,7 @@ Gayu & B is a beautiful couples app that combines romance, productivity, and sha
 - Favorite/heart system with like counter
 - Filter by all or favorites
 - Beautiful photo grid layout (3 photos per row)
+- Video player with play/pause controls
 - Stats tracking (total memories, favorites, total hearts)
 - Timeline view sorted by date (newest first)
 - Link memories to bucket list items or tasks
@@ -140,6 +144,81 @@ Gayu & B is a beautiful couples app that combines romance, productivity, and sha
   - Tulip density (Low/Medium/High)
 - Connected accounts management
 - App version and info
+
+#### 👫 **Couple Pairing** - Connect with Your Partner
+- Invite code system (6-character codes)
+- Create couple profile or join existing
+- Two modes: Create or Join
+- Seamless partner connection
+- Real-time couple status sync
+- Couple information dashboard
+- Relationship start date tracking
+- Partner profile integration
+- Beautiful onboarding flow
+
+#### 🔄 **Real-time Sync** - Always in Sync
+- Firebase Firestore real-time listeners
+- Instant updates between partners
+- Live task synchronization
+- Dream status updates in real-time
+- Watch list sync
+- Memory sharing between partners
+- Love note instant delivery
+- Calendar event sync
+- Automatic conflict resolution
+- Optimistic UI updates
+
+#### 🌷 **3D Tulip Garden** - Visualize Your Journey
+- Interactive 3D tulip garden
+- Animated tulip growth (seed → stem → flower)
+- Swaying tulips with physics animations
+- Color-coded achievements:
+  - 💛 Yellow tulips for completed tasks
+  - 💜 Purple tulips for achieved dreams
+  - 💕 Pink tulips for cherished memories
+- Rotating sun animation
+- Garden statistics dashboard
+- Batman gardening tips
+- Beautiful visual representation of progress
+- Smooth React Native Reanimated animations
+- Tap to explore your achievements
+
+#### 📌 **Pinterest Integration** - Dream Board Sync
+- Connect Pinterest account
+- View all your boards
+- Sync boards with bucket list
+- Pin-to-dream conversion
+- Board statistics (pins, boards count)
+- Two-way sync capability
+- Beautiful board preview cards
+- Share dreams to Pinterest
+- Organize inspiration in one place
+- OAuth authentication ready
+
+#### 🔔 **Push Notifications** - Never Miss a Moment
+- Task reminders (customizable timing)
+- Dream deadline notifications
+- Event reminders (configurable minutes before)
+- Partner activity alerts
+- Anniversary reminders
+- Daily love reminders (scheduled time)
+- Batman surprise notifications
+- Notification preferences
+- Badge counts
+- Deep linking to app sections
+- Background notification handling
+
+#### 🌙 **Dark Mode** - For Those Late Night Convos
+- Complete dark theme implementation
+- Three modes: Light, Dark, Auto
+- Auto mode respects system preferences
+- Persistent theme selection (AsyncStorage)
+- Smooth theme transitions
+- All screens fully themed
+- Dark-mode-optimized colors
+- Reduced eye strain for night use
+- Tulip glow effects in dark mode
+- Batman approves! 🦇
 
 ### Design System
 
@@ -235,10 +314,13 @@ npm run web      # For Web
 ### Backend & Services
 - **Firebase** - Complete backend solution
   - Firebase Authentication (Email/Password, Google)
-  - Firestore Database (NoSQL, real-time)
+  - Firestore Database (NoSQL, real-time sync)
   - Firebase Storage (image/video storage)
-- **Expo Image Picker** - Photo selection
+- **Expo Image Picker** - Photo & video selection
 - **Expo Calendar** - Calendar integration
+- **Expo Notifications** - Push notifications
+- **Expo AV** - Video playback
+- **AsyncStorage** - Local data persistence
 
 ### UI/UX
 - **Expo Linear Gradient** - Beautiful gradients
@@ -247,10 +329,10 @@ npm run web      # For Web
 - **Expo Vector Icons** (Ionicons) - Icon library
 
 ### Future Integrations
-- Pinterest API - Board sync
 - Google Calendar API - Advanced sync
 - Spotify API - Music integration
-- Push Notifications - Real-time alerts
+- AI-powered suggestions
+- Advanced analytics
 
 ## 📂 Project Structure
 
@@ -262,6 +344,7 @@ meandher/
 │   │   ├── Card.tsx
 │   │   ├── Text.tsx
 │   │   ├── Input.tsx
+│   │   ├── VideoPlayer.tsx   # NEW: Video playback
 │   │   └── index.ts
 │   ├── screens/             # App screens
 │   │   ├── auth/            # Authentication screens
@@ -272,17 +355,26 @@ meandher/
 │   │   ├── TasksScreen.tsx
 │   │   ├── GoalsScreen.tsx
 │   │   ├── WatchListScreen.tsx
-│   │   ├── MemoriesScreen.tsx
+│   │   ├── MemoriesScreen.tsx         # Updated: Video support
 │   │   ├── CalendarScreen.tsx
 │   │   ├── LoveScreen.tsx
-│   │   └── ProfileScreen.tsx
+│   │   ├── ProfileScreen.tsx
+│   │   ├── TulipGardenScreen.tsx      # NEW: 3D garden
+│   │   ├── PinterestBoardsScreen.tsx  # NEW: Pinterest
+│   │   └── CouplePairingScreen.tsx    # NEW: Pairing
 │   ├── navigation/          # Navigation configuration
-│   │   ├── AppNavigator.tsx
+│   │   ├── AppNavigator.tsx   # Updated: New screens
 │   │   └── AuthNavigator.tsx
 │   ├── services/            # Backend services
 │   │   ├── firebase.ts
 │   │   ├── authService.ts
-│   │   └── firestoreService.ts
+│   │   ├── firestoreService.ts
+│   │   ├── pinterestService.ts        # NEW: Pinterest API
+│   │   └── notificationService.ts     # NEW: Push notifications
+│   ├── hooks/               # Custom React hooks
+│   │   └── useFirestoreSync.ts        # NEW: Real-time sync
+│   ├── context/             # React context providers
+│   │   └── ThemeContext.tsx           # NEW: Dark mode
 │   ├── store/              # State management
 │   │   └── useStore.ts
 │   ├── theme/              # Design system
@@ -293,7 +385,7 @@ meandher/
 │   ├── types/              # TypeScript types
 │   │   └── index.ts
 │   └── assets/             # Images, fonts, animations
-├── App.tsx                 # Main app component
+├── App.tsx                 # Main app component (Updated)
 ├── app.json                # Expo configuration
 ├── package.json            # Dependencies
 ├── tsconfig.json           # TypeScript config
@@ -342,19 +434,18 @@ meandher/
 - [x] Profile & Settings
 - [x] Batman easter eggs
 
-### 🚧 Phase 2: Enhancement (In Progress)
-- [ ] Real-time sync between partners (Firestore ready)
-- [ ] Couple pairing system with invite codes
-- [ ] Task/Dream CRUD modals (current: in-line editing)
-- [ ] Pinterest board integration
-- [ ] Advanced animations and micro-interactions
-- [ ] Push notifications for reminders
-- [ ] 3D tulip garden visualization
-- [ ] Dark mode implementation
+### ✅ Phase 2: Enhancement - COMPLETED!
+- [x] Real-time sync between partners with Firestore
+- [x] Couple pairing system with invite codes
+- [x] Video memories support with custom player
+- [x] Pinterest board integration
+- [x] Advanced animations and micro-interactions
+- [x] Push notifications for reminders
+- [x] 3D tulip garden visualization
+- [x] Dark mode implementation (Light/Dark/Auto)
 
 ### 🎯 Phase 3: Premium Features
 - [ ] AI-powered date suggestions
-- [ ] Video memories support
 - [ ] Auto-generated memory books
 - [ ] Advanced relationship analytics
 - [ ] Relationship insights and trends
@@ -433,17 +524,19 @@ For questions or support, please open an issue in the repository.
 
 ## 📊 Current Stats
 
-- **Total Files**: 36
-- **Lines of Code**: ~18,000+
-- **Components**: 4 reusable
-- **Screens**: 12 (including auth)
-- **Features**: 9 major features
-- **Navigation Routes**: 10+
+- **Total Files**: 45+
+- **Lines of Code**: ~25,000+
+- **Components**: 5 reusable (including VideoPlayer)
+- **Screens**: 15 (including auth, pairing, garden, pinterest)
+- **Features**: 16 major features
+- **Navigation Routes**: 15+
+- **Services**: 5 backend services
+- **Hooks**: 2 custom hooks
 - **Type Definitions**: Complete TypeScript coverage
 
 ---
 
-**Version:** 2.0.0
+**Version:** 2.5.0
 **Last Updated:** January 2025
-**Status:** Phase 1 Complete ✅ | Phase 2 In Progress 🚧
+**Status:** Phase 1 Complete ✅ | Phase 2 Complete ✅ | Phase 3 Next 🎯
 **Built with**: React Native, Expo, TypeScript, Firebase, Love 💕

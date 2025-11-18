@@ -65,17 +65,19 @@ const HomeScreen = ({ navigation }: any) => {
           </View>
 
           {/* Tulip Garden Preview */}
-          <Card style={styles.gardenCard} variant="purple">
-            <Text variant="h3" style={styles.sectionTitle}>
-              🌷 Our Tulip Garden
-            </Text>
-            <View style={styles.tulipPreview}>
-              <Text variant="hero">🌷🌷🌷🌷🌷</Text>
-            </View>
-            <Text variant="bodySmall" style={styles.centered}>
-              {247} tulips planted
-            </Text>
-          </Card>
+          <TouchableOpacity onPress={() => navigation.navigate('TulipGarden')}>
+            <Card style={styles.gardenCard} variant="purple">
+              <Text variant="h3" style={styles.sectionTitle}>
+                🌷 Our Tulip Garden
+              </Text>
+              <View style={styles.tulipPreview}>
+                <Text variant="hero">🌷🌷🌷🌷🌷</Text>
+              </View>
+              <Text variant="bodySmall" style={styles.centered}>
+                Tap to see your achievements bloom!
+              </Text>
+            </Card>
+          </TouchableOpacity>
 
           {/* Quick Access Cards */}
           <View style={styles.section}>
@@ -190,20 +192,21 @@ const HomeScreen = ({ navigation }: any) => {
 
               <TouchableOpacity
                 style={styles.quickCard}
-                onPress={() => {
-                  // Batman surprise - could navigate to a special feature
-                  console.log('Batman easter egg!');
-                }}
+                onPress={() => navigation.navigate('PinterestBoards')}
               >
-                <Card variant="light" style={{ backgroundColor: colors.accent.batmanDark + '10' }}>
-                  <Text variant="h2">🦇</Text>
+                <Card variant="light">
+                  <Ionicons
+                    name="logo-pinterest"
+                    size={32}
+                    color={colors.primary.tulipRed}
+                  />
                   <Text variant="h3" style={styles.cardTitle}>
-                    Batcave
+                    Pinterest
                   </Text>
                   <Text variant="bodySmall">
-                    Secret features
+                    Sync boards
                   </Text>
-                  <Text variant="caption">🦇 Explore</Text>
+                  <Text variant="caption">📌 Dreams</Text>
                 </Card>
               </TouchableOpacity>
             </View>
